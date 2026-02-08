@@ -26,6 +26,10 @@
 - Added two additional timelines and renamed the main title/subtitle to Brawl Archives.
 - Added key usage hints beside the WASD and IJKL controls.
 - Removed the WorldCore header section and local model toggle from the main page, and made the explorer scrollable.
+- Updated the World timeline copy and card titles.
+- Updated the World timeline to use the new image assets.
+- Renamed timelines and updated the Grand Rebrand timeline narrative.
+- Updated placeholder images for timelines 2, 3, and 4.
 
 ### Added
 - Added a global background music toggle with looping audio.
