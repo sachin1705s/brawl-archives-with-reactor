@@ -12,6 +12,7 @@ A real-time interactive world model demo built with the Reactor JS SDK. Control 
 - **Custom Starting Image**: Upload or select an example image to start from
 - **Live Prompt Changes**: Change the scene description during generation
 - **Reset**: Restart generation while preserving settings
+- **Timeline Flow**: Cards auto-start after 5 seconds; entering opens a full-screen experience for 15 seconds, then advances.
 
 ## Getting Started
 
@@ -45,6 +46,20 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ### API Key
 
 Set `REACTOR_API_KEY` (or `NEXT_PUBLIC_REACTOR_API_KEY`) in `.env.local`. The app uses it on the backend to obtain a session token—the key never appears in the UI. Check "Local model" to connect to a locally running model instead.
+
+Alternatively, you can paste your API key directly into the Connection panel in the UI. When provided there, the key is used only for that session and is not saved to disk.
+
+### Timeline Content
+
+The timelines are served from `/api/timeline` and defined in:
+
+- `/Users/sachin/Documents/reactor hackathon/Supercell-Hack/worldcore/lib/timeline.ts`
+
+Background and starting images are in:
+
+- `/Users/sachin/Documents/reactor hackathon/Supercell-Hack/worldcore/public/timeline`
+
+The full-screen experience lives at `/experience?timeline=timeline-id&card=card-id`.
 
 ## UI Layout
 

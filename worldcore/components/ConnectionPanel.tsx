@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useReactor } from "@reactor-team/js-sdk";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { sanitizeApiKey } from "@/lib/apiKey";
 
 interface ConnectionPanelProps {
   onLocalModeChange: (isLocal: boolean) => void;
@@ -23,9 +25,12 @@ export function ConnectionPanel({
   const [isLocalMode, setIsLocalMode] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [apiKeyInput, setApiKeyInput] = useState("");
+  const [showApiKey, setShowApiKey] = useState(false);
 
   const isConnecting = status === "connecting" || status === "waiting";
   const isConnected = status === "ready";
+  const apiKey = useMemo(() => sanitizeApiKey(apiKeyInput), [apiKeyInput]);
 
   const handleConnect = async () => {
     setError(null);
@@ -36,7 +41,13 @@ export function ConnectionPanel({
     }
     setIsFetching(true);
     try {
-      const res = await fetch("/api/reactor-token");
+      const res = apiKey
+        ? await fetch("/api/reactor-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ apiKey }),
+          })
+        : await fetch("/api/reactor-token");
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error ?? "Failed to get token");
@@ -62,8 +73,8 @@ export function ConnectionPanel({
   };
 
   return (
-    <div className={cn("flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-4 bg-card rounded-lg border border-border", className)}>
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+    <div className={cn("flex flex-col gap-3 p-4 bg-card rounded-lg border border-border", className)}>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {/* Local model checkbox */}
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -77,7 +88,7 @@ export function ConnectionPanel({
         </label>
 
         {/* Status / error */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1">
           <div
             className={cn(
               "w-2.5 h-2.5 rounded-full transition-colors",
@@ -96,28 +107,56 @@ export function ConnectionPanel({
             </span>
           )}
         </div>
+
+        {/* Connect / Disconnect button */}
+        {status === "disconnected" ? (
+          <Button
+            size="default"
+            variant="default"
+            onClick={handleConnect}
+            disabled={isFetching}
+            className="min-w-[100px]"
+          >
+            {isFetching ? "Connecting…" : "Connect"}
+          </Button>
+        ) : (
+          <Button
+            size="default"
+            variant="secondary"
+            onClick={() => disconnect()}
+            className="min-w-[100px]"
+          >
+            {isConnecting ? "Cancel" : "Disconnect"}
+          </Button>
+        )}
       </div>
 
-      {/* Connect / Disconnect button */}
-      {status === "disconnected" ? (
-        <Button
-          size="default"
-          variant="default"
-          onClick={handleConnect}
-          disabled={isFetching}
-          className="min-w-[100px]"
-        >
-          {isFetching ? "Connecting…" : "Connect"}
-        </Button>
-      ) : (
-        <Button
-          size="default"
-          variant="secondary"
-          onClick={() => disconnect()}
-          className="min-w-[100px]"
-        >
-          {isConnecting ? "Cancel" : "Disconnect"}
-        </Button>
+      {!isLocalMode && (
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="flex-1">
+            <Input
+              type={showApiKey ? "text" : "password"}
+              placeholder="Paste Reactor API key (optional)"
+              value={apiKeyInput}
+              onChange={(e) => setApiKeyInput(e.target.value)}
+              disabled={isConnected}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              If left blank, the server will use the API key from <code>.env.local</code>.
+            </p>
+          </div>
+          <Button
+            size="default"
+            variant="ghost"
+            onClick={() => setShowApiKey((prev) => !prev)}
+            disabled={isConnected}
+            className="min-w-[96px]"
+          >
+            {showApiKey ? "Hide key" : "Show key"}
+          </Button>
+        </div>
       )}
     </div>
   );

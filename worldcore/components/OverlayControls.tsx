@@ -286,6 +286,9 @@ export function OverlayControls({ className }: OverlayControlsProps) {
       {/* WASD - Bottom Left */}
       <div className="absolute bottom-4 left-4 pointer-events-auto">
         <div className="flex flex-col items-center gap-1">
+          <span className="text-[9px] uppercase tracking-[0.2em] text-white/60">
+            Interact via these keys
+          </span>
           <KeyButton
             label="W"
             isPending={pressedKeys.has("w")}
@@ -330,6 +333,9 @@ export function OverlayControls({ className }: OverlayControlsProps) {
       {/* IJKL Camera - Bottom Right */}
       <div className="absolute bottom-4 right-4 pointer-events-auto">
         <div className="flex flex-col items-center gap-1">
+          <span className="text-[9px] uppercase tracking-[0.2em] text-white/60">
+            Interact via these keys
+          </span>
           <KeyButton
             label="I"
             subLabel="UP"
