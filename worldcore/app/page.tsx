@@ -17,7 +17,7 @@ import {
 
 
 async function fetchTimelines(): Promise<Timeline[]> {
-  const response = await fetch("/api/timeline");
+  const response = await fetch("/api/timeline", { cache: "no-store" });
   if (!response.ok) {
     throw new Error("Failed to load timeline data");
   }
@@ -74,7 +74,10 @@ export default function Page() {
   }, [isLocalMode]);
 
   const handleEnter = (timeline: Timeline) => {
-    if (!timeline.cards.length) return;
+    if (timeline.comingSoon || timeline.cards.length === 0) {
+      router.push(`/coming-soon?title=${encodeURIComponent(timeline.title)}`);
+      return;
+    }
     router.push(`/experience?timeline=${timeline.id}&card=${timeline.cards[0].id}`);
   };
 

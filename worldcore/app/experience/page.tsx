@@ -19,7 +19,7 @@ const INITIAL_JPEG_QUALITY = 0.7;
 const MAX_BASE64_BYTES = 200_000;
 
 async function fetchTimelines(): Promise<Timeline[]> {
-  const response = await fetch("/api/timeline");
+  const response = await fetch("/api/timeline", { cache: "no-store" });
   if (!response.ok) {
     throw new Error("Failed to load timeline data");
   }
@@ -356,10 +356,10 @@ export default function ExperiencePage() {
     );
   }
 
-  if (!card || error) {
+  if (!card || error || timeline?.comingSoon) {
     return (
       <div className="h-screen w-screen flex items-center justify-center text-sm text-muted-foreground">
-        {error ?? "Card not found"}
+        {timeline?.comingSoon ? "Coming soon" : error ?? "Card not found"}
       </div>
     );
   }

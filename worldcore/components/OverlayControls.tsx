@@ -85,7 +85,7 @@ function KeyButton({
   };
 
   const baseClasses =
-    "w-12 h-12 rounded-lg font-bold text-xs transition-all duration-150 select-none cursor-pointer flex flex-col items-center justify-center touch-none backdrop-blur-sm";
+    "w-16 h-16 rounded-xl font-bold text-sm transition-all duration-150 select-none cursor-pointer flex flex-col items-center justify-center touch-none backdrop-blur-sm";
 
   // Determine the visual state:
   // 1. Active (currently affecting) - strongest color, solid
@@ -130,8 +130,8 @@ function KeyButton({
       disabled={disabled}
       style={{ touchAction: "none" }}
     >
-      <span className="text-sm font-bold">{label}</span>
-      {subLabel && <span className="text-[8px] opacity-70">{subLabel}</span>}
+      <span className="text-base font-bold">{label}</span>
+      {subLabel && <span className="text-[10px] opacity-70">{subLabel}</span>}
     </button>
   );
 }

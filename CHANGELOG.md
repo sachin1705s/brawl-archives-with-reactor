@@ -30,6 +30,21 @@
 - Updated the World timeline to use the new image assets.
 - Renamed timelines and updated the Grand Rebrand timeline narrative.
 - Updated placeholder images for timelines 2, 3, and 4.
+- Updated Grand Rebrand card images and enlarged interaction controls.
+- Updated Starr Park timeline card imagery and cover image.
+- Disabled timeline fetch caching so updated images show immediately.
+- Updated Starr Park prompts to match the new imagery.
+- Updated Grand Rebrand card imagery and use card 1 as the timeline cover.
+- Added Coming Soon behavior for Ember Frontier and Signal Forest.
 
 ### Added
 - Added a global background music toggle with looping audio.
+
+## [2026-02-10]
+### Added
+- Added a Lambda GPU VM runbook for experimenting with the UGC-VideoCaptioner model.
+- Added a local UGC-VideoCaptioner runbook, scripts, and a dry-run test harness.
+- Added a WorldCore local UI page and API route for running UGC-VideoCaptioner from the browser.
+### Changed
+- Documented the new runbook link in the repository README.
+- Documented the local captioner UI in the root and WorldCore READMEs.
